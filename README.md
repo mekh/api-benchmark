@@ -17,12 +17,13 @@ If necessary, run the migration with `npm run migration:run` and generate test d
 # Configuration
 The `APP_PLATFORM` variable is set in the format `<PLATFORM>-<FRAMEWORK>`
 
-| APP_PLATFORM | NestJS | GraphQL   | HTTP    |
-|--------------|--------|-----------|---------|
-| raw-express  |        | graphql   | express |
-| raw-fastify  |        | graphql   | fastify |
-| nest-express | ✅      | Apollo    | express |
-| nets-fastify | ✅      | Mercurius | fastify |
+| APP_PLATFORM | NestJS | GraphQL                                                    | HTTP                                                             |
+|--------------|--------|------------------------------------------------------------|------------------------------------------------------------------|
+| raw-express  |        | [Graphql](https://www.graphql-js.org/docs/)                | [Express](https://expressjs.com/)                                |
+| raw-fastify  |        | [Graphql](https://www.graphql-js.org/docs/)                | [Fastify](https://fastify.dev/)                                  |
+| raw-uexpress |        | [Graphql](https://www.graphql-js.org/docs/)                | [Ultimate Express](https://github.com/dimdenGD/ultimate-express) |
+| nest-express | ✅      | [Apollo](https://www.apollographql.com/docs/apollo-server) | [Express](https://expressjs.com/)                                |
+| nets-fastify | ✅      | [Mercurius](https://mercurius.dev/)                        | [Fastify](https://fastify.dev/)                                  |
 
 
 Regardless of the configuration, the following endpoints are available:
