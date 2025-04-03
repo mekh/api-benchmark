@@ -10,7 +10,11 @@ import {
 import { AppConfig } from './config/app.config';
 import { AppModule } from './app.module';
 
-import { createExpressServer, createFastifyServer } from './raw/server';
+import {
+  createExpressServer,
+  createFastifyServer,
+  createUExpressServer,
+} from './raw/server';
 
 const config = new AppConfig();
 
@@ -25,6 +29,24 @@ const createNestApp = async () => {
       );
 };
 
+const createServer = async (lib: typeof config.httpLib) => {
+  let server;
+
+  switch (lib) {
+    case 'express':
+      server = await createExpressServer();
+      break;
+    case 'fastify':
+      server = await createFastifyServer();
+      break;
+    case 'uexpress':
+      server = await createUExpressServer();
+      break;
+  }
+
+  return server;
+};
+
 const run = async (): Promise<void> => {
   let app: { listen: (port: number, cb?: () => any) => any };
 
@@ -33,10 +55,7 @@ const run = async (): Promise<void> => {
       app = await createNestApp();
       break;
     case 'raw':
-      app =
-        config.httpLib === 'express'
-          ? await createExpressServer()
-          : await createFastifyServer();
+      app = await createServer(config.httpLib);
       break;
     default:
       throw new Error('invalid config');

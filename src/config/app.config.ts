@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigBase } from './.base.config';
 
 type Server = 'raw' | 'nest';
-type Lib = 'express' | 'fastify';
+type Lib = 'express' | 'fastify' | 'uexpress';
 type Driver = 'apollo' | 'mercurius' | 'raw';
 
 @Injectable()

@@ -2,6 +2,7 @@ import 'dotenv/config';
 import 'tsconfig-paths/register';
 import express from 'express';
 import fastify from 'fastify';
+import UExpress from 'ultimate-express';
 import { graphql, GraphQLSchema } from 'graphql';
 
 import { UserRepository } from '../repositories/user.repository';
@@ -20,9 +21,15 @@ const execGql = async (schema: GraphQLSchema, query: string) => {
   return data;
 };
 
-export const createExpressServer = async () => {
+const init = async () => {
   const repo = await UserRepository.create();
   const schema = createSchema(repo);
+
+  return { repo, schema };
+};
+
+export const createExpressServer = async () => {
+  const { repo, schema } = await init();
   const app = express();
   app.use(express.json());
 
@@ -47,9 +54,34 @@ export const createExpressServer = async () => {
   return app;
 };
 
+export const createUExpressServer = async () => {
+  const { repo, schema } = await init();
+  const app = UExpress();
+  app.use(UExpress.json());
+
+  app.post('/graphql', async (req, res) => {
+    const data = await execGql(schema, (req.body as { query: string }).query);
+
+    res.json(data);
+  });
+
+  app.get('/ormJoin', async (_, res) => {
+    const data = await repo.ormJoin();
+
+    res.json(data);
+  });
+
+  app.get('/rawJoin', async (_, res) => {
+    const data = await repo.rawJoin();
+
+    res.json(data);
+  });
+
+  return app;
+};
+
 export const createFastifyServer = async () => {
-  const repo = await UserRepository.create();
-  const schema = createSchema(repo);
+  const { repo, schema } = await init();
   const app = fastify();
 
   app.post('/graphql', async (req) => {

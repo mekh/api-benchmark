@@ -46,7 +46,7 @@ export const ErrorCounter = new Counter('errors_count');
 new Rate('failed_requests');
 
 export const options = {
-  vus: 10,
+  vus: 30,
   duration: '1m',
   thresholds: {
     http_req_duration: ['p(95)<500'],
