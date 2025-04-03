@@ -7,7 +7,7 @@ import {
   GraphQLSchema,
   GraphQLNonNull,
 } from 'graphql';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../../repositories/user.repository';
 
 const ActionType = new GraphQLObjectType({
   name: 'Action',
