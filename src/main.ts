@@ -35,8 +35,8 @@ const run = async (): Promise<void> => {
     case 'raw':
       app =
         config.httpLib === 'express'
-          ? createExpressServer()
-          : createFastifyServer();
+          ? await createExpressServer()
+          : await createFastifyServer();
       break;
     default:
       throw new Error('invalid config');

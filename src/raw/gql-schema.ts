@@ -42,6 +42,7 @@ const RoleType = new GraphQLObjectType({
   fields: {
     id: { type: new GraphQLNonNull(GraphQLInt) },
     name: { type: new GraphQLNonNull(GraphQLString) },
+    active: { type: new GraphQLNonNull(GraphQLBoolean) },
     permissions: { type: new GraphQLNonNull(new GraphQLList(PermissionType)) },
   },
 });
@@ -50,6 +51,7 @@ const UserType = new GraphQLObjectType({
   name: 'User',
   fields: {
     id: { type: new GraphQLNonNull(GraphQLInt) },
+    guid: { type: new GraphQLNonNull(GraphQLString) },
     name: { type: new GraphQLNonNull(GraphQLString) },
     email: { type: new GraphQLNonNull(GraphQLString) },
     isAdmin: { type: new GraphQLNonNull(GraphQLBoolean) },

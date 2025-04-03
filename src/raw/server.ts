@@ -20,8 +20,8 @@ const execGql = async (schema: GraphQLSchema, query: string) => {
   return data;
 };
 
-export const createExpressServer = () => {
-  const repo = UserRepository.create();
+export const createExpressServer = async () => {
+  const repo = await UserRepository.create();
   const schema = createSchema(repo);
   const app = express();
   app.use(express.json());
@@ -47,8 +47,8 @@ export const createExpressServer = () => {
   return app;
 };
 
-export const createFastifyServer = () => {
-  const repo = UserRepository.create();
+export const createFastifyServer = async () => {
+  const repo = await UserRepository.create();
   const schema = createSchema(repo);
   const app = fastify();
 

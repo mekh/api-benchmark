@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment */
 import http from 'k6/http';
-import { check, sleep } from 'k6';
+import { check } from 'k6';
 import { Counter, Rate } from 'k6/metrics';
 
 const loadEnv = (name: string, values?: string[]) => {
@@ -46,7 +46,7 @@ export const ErrorCounter = new Counter('errors_count');
 new Rate('failed_requests');
 
 export const options = {
-  vus: 1,
+  vus: 10,
   duration: '1m',
   thresholds: {
     http_req_duration: ['p(95)<500'],
@@ -118,6 +118,4 @@ export default function () {
   return PROTO === 'gql'
     ? checkGql(res)
     : checkRest(res);
-
-  sleep(500)
 }

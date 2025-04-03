@@ -32,11 +32,12 @@ export interface RawData
 
 @Injectable()
 export class UserRepository {
-  public static create(): UserRepository {
+  public static async create(): Promise<UserRepository> {
     const datasource = new DataSource({
       ...new DbConfig(),
       entities: [path.join(__dirname, '../entities/*.entity.{js,ts}')],
     });
+    await datasource.initialize();
     const config = new QueryConfig();
 
     return new UserRepository(datasource, config);
@@ -45,12 +46,7 @@ export class UserRepository {
   constructor(
     private readonly datasource: DataSource,
     private readonly opts: QueryConfig,
-  ) {
-    const { idMin, idMax, qty } = opts;
-    if (idMax < idMin || idMin <= 0 || idMax - idMin + 1 < qty) {
-      throw new Error('invalid min/max ID');
-    }
-  }
+  ) {}
 
   public async rawJoin() {
     const data = await this.datasource.query<RawData[]>(this.getRawQuery());
@@ -63,7 +59,7 @@ export class UserRepository {
   }
 
   public getRawQuery(): string {
-    const ids = this.randomizeIds().join(', ');
+    const ids = this.opts.randomizeIds().join(', ');
 
     return `
       SELECT u."id",
@@ -101,7 +97,7 @@ export class UserRepository {
   }
 
   public getOrmQuery(): FindManyOptions<UserEntity> {
-    const ids = this.randomizeIds();
+    const ids = this.opts.randomizeIds();
 
     return {
       relations: {
@@ -150,18 +146,6 @@ export class UserRepository {
       },
       where: { id: In(ids) },
     };
-  }
-
-  private randomizeIds(): number[] {
-    const { idMin, idMax, qty } = this.opts;
-    const size = Math.min(idMax - idMin + 1, qty);
-
-    const set = new Set<number>();
-    do {
-      set.add(Math.floor(Math.random() * (idMax - idMax) + idMax));
-    } while (set.size < size);
-
-    return [...set.values()];
   }
 
   public rawToUser(data: RawData[]) {

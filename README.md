@@ -62,9 +62,7 @@ k6 run -e TYPE=ormJoin|rawJoin \
 The `TYPE` and `PROTO` parameters are required, the others are optional.
 
 # Observations
-Try adding the `createdAt` and `updatedAt` fields in the following files:
-- `src/helpers/user-orm-query.helper.ts`
-- `src/helpers/user-raw-query.helper.ts`
+Try adding the `createdAt` and `updatedAt` fields the UserRepository class.
 
 Then restart the service and run the tests.
 Notice how the requests per second (RPS) decrease just because of the additional fields being returned from the database.
