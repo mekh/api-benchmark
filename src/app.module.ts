@@ -4,10 +4,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver } from '@nestjs/mercurius';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AppConfig, GqlDriver } from './config/app.config';
 import { ConfigModule } from './config/config.module';
 import { DbConfig } from './config/db.config';
 import { GraphqlConfig } from './config/graphql.cofig';
-import { UserController } from './controllers/user.controller';
+import { PyroscopeConfig } from './config/pyroscope.config';
+import { PyroscopeModule } from './lib/pyroscope';
 import { ActionEntity } from './entities/action.entity';
 import { PermissionEntity } from './entities/permission.entity';
 import { ResourceEntity } from './entities/resource.entity';
@@ -15,10 +17,11 @@ import { RoleEntity } from './entities/role.entity';
 import { UserEntity } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
 import { UserQueryResolver } from './resolvers/user-query.resolver';
+import { UserController } from './controllers/user.controller';
 
 @Module({})
 export class AppModule {
-  public static forRoot(driver?: string): DynamicModule {
+  public static forRoot(driver?: GqlDriver): DynamicModule {
     const useApollo = driver === 'apollo';
 
     return {
@@ -45,6 +48,17 @@ export class AppModule {
           inject: [GraphqlConfig],
           useFactory(conf: GraphqlConfig) {
             return useApollo ? conf.apolloConfig : conf.mercuriusConfig;
+          },
+        }),
+        PyroscopeModule.forRootAsync({
+          global: true,
+          imports: [ConfigModule],
+          inject: [PyroscopeConfig, AppConfig],
+          useFactory: (conf: PyroscopeConfig, { appName }: AppConfig) => {
+            const config = conf.getConfig();
+            config.appName = appName;
+
+            return config;
           },
         }),
       ],

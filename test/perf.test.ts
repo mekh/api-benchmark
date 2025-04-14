@@ -12,10 +12,10 @@ const loadEnv = (name: string, values?: string[]) => {
   return env;
 }
 
-const PROTO = loadEnv('PROTO', ['gql', 'http']);
-const TYPE = loadEnv('TYPE', ['ormJoin', 'rawJoin']);
-const HOST = __ENV.HOST || '127.0.0.1';
-const PORT = __ENV.PORT || '3000';
+const PROTO = loadEnv('TEST_PROTO', ['gql', 'http']);
+const TYPE = loadEnv('JOIN_METHOD', ['ormJoin', 'rawJoin']);
+const HOST = __ENV.APP_HOST || '127.0.0.1';
+const PORT = __ENV.APP_PORT || '3000';
 const SCHEME = __ENV.SSL === 'true' ? 'https' : 'http';
 
 const BASE_URL = `${SCHEME}://${HOST}:${PORT}`;
@@ -47,7 +47,8 @@ new Rate('failed_requests');
 
 export const options = {
   vus: 30,
-  duration: '1m',
+  // duration: '1m',
+  iterations: 10000,
   thresholds: {
     http_req_duration: ['p(95)<500'],
     failed_requests: ['rate<0.1'],

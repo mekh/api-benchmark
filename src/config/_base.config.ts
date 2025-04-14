@@ -22,4 +22,19 @@ export class ConfigBase {
       ? value === 'true'
       : undefined;
   }
+
+  public asEnum(envName: string, values: string[], required: true): string;
+  public asEnum(envName: string, values: string[], required?: boolean): string | undefined {
+    const value = this.env[envName];
+
+    if (required && !value) {
+      throw new Error(`${envName} is required`);
+    }
+
+    if (value && !values.includes(value)) {
+      throw new Error(`\nunknown value for the "${envName}" env: ${value}\nallowed values are: ${values.join(', ')}`);
+    }
+
+    return value;
+  }
 }

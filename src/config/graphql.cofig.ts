@@ -3,7 +3,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { MercuriusDriverConfig } from '@nestjs/mercurius';
 
-import { ConfigBase } from './.base.config';
+import { ConfigBase } from './_base.config';
 
 @Injectable()
 export class GraphqlConfig extends ConfigBase {

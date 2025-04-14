@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
-import { ConfigBase } from './.base.config';
+import { ConfigBase } from './_base.config';
 
 @Injectable()
 export class DbConfig extends ConfigBase implements PostgresConnectionOptions {

@@ -2,9 +2,29 @@ import 'dotenv/config';
 import * as process from 'node:process';
 
 import { AppConfig } from './config/app.config';
+import { PyroscopeConfig } from './config/pyroscope.config';
+import { PyroscopeService } from './lib/pyroscope';
 import { server } from './server';
 
 const config = new AppConfig();
+const pyroscopeConfig = new PyroscopeConfig();
+
+const runPyroscope = () => {
+  const pyroscope = new PyroscopeService({
+    ...pyroscopeConfig.getConfig(),
+    appName: config.appName,
+    tags: {
+      setup: `${config.server}-${config.httpLib}-${config.gqlDriver}`,
+      server: config.server,
+      httpLib: config.httpLib,
+      gqlDriver: config.gqlDriver,
+      testProto: config.testProto,
+      joinMethod: config.joinMethod,
+    },
+  });
+
+  pyroscope.start();
+}
 
 const run = async (): Promise<void> => {
   const getServer = config.server === 'nest'
@@ -23,6 +43,10 @@ const run = async (): Promise<void> => {
       `${config.server}-${config.httpLib}/${config.gqlDriver} is running on ${config.host}:${config.port}`,
     );
   });
+
+  if (pyroscopeConfig.enabled) {
+    runPyroscope();
+  }
 };
 
 run().catch((err: unknown) => {

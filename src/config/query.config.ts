@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigBase } from './.base.config';
+import { ConfigBase } from './_base.config';
 
 @Injectable()
 export class QueryConfig extends ConfigBase {
