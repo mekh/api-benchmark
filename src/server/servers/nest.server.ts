@@ -21,7 +21,7 @@ export class NestServer extends BaseHttpServer {
       );
   }
 
-  public async listen(port: number, cb?: () => any) {
-    await this.app.listen(port, cb);
+  public async listen(host: string, port: number, cb?: () => any) {
+    await this.app.listen(port, host, cb);
   }
 }

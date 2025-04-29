@@ -15,6 +15,14 @@ export class ExpressServer extends BaseHttpServer {
   override async init() {
     await super.init();
 
+    this.app.get('/info', (_, res) => {
+      res.json(this.info());
+    });
+
+    this.app.get('/health', (_, res) => {
+      res.end(this.health());
+    });
+
     this.app.post('/graphql', (req, res) => {
       this
         .executeGql((req.body as { query: string }).query)
@@ -34,7 +42,7 @@ export class ExpressServer extends BaseHttpServer {
     })
   }
 
-  async listen(port: number, cb?: () => any): Promise<void> {
-    this.app.listen(port, cb)
+  async listen(host: string, port: number, cb?: () => any): Promise<void> {
+    this.app.listen(port, host, cb)
   }
 }

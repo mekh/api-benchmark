@@ -38,7 +38,7 @@ const run = async (): Promise<void> => {
   const app = getServer();
   await app.init();
 
-  await app.listen(config.port, () => {
+  await app.listen(config.host, config.port, () => {
     console.log(
       `${config.server}-${config.httpLib}/${config.gqlDriver} is running on ${config.host}:${config.port}`,
     );

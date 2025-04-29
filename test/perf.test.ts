@@ -15,10 +15,10 @@ const loadEnv = (name: string, values?: string[]) => {
 const PROTO = loadEnv('TEST_PROTO', ['gql', 'http']);
 const TYPE = loadEnv('JOIN_METHOD', ['ormJoin', 'rawJoin']);
 const HOST = __ENV.APP_HOST || '127.0.0.1';
-const PORT = __ENV.APP_PORT || '3000';
+const PORT = __ENV.APP_PORT;
 const SCHEME = __ENV.SSL === 'true' ? 'https' : 'http';
 
-const BASE_URL = `${SCHEME}://${HOST}:${PORT}`;
+const BASE_URL = `${SCHEME}://${HOST}${PORT ? `:${PORT}` : ''}`;
 const GQL_URL = [BASE_URL, 'graphql'].join('/');
 const REST_URL = [BASE_URL, TYPE].join('/');
 

@@ -15,6 +15,14 @@ export class FastifyServer extends BaseHttpServer {
   override async init() {
     await super.init();
 
+    this.app.get('/info', (_) => {
+      return this.info();
+    });
+
+    this.app.get('/health', (_) => {
+      return this.health();
+    });
+
     this.app.post('/graphql', (req) => {
       return this.executeGql((req.body as { query: string }).query)
     });
@@ -28,8 +36,8 @@ export class FastifyServer extends BaseHttpServer {
     })
   }
 
-  async listen(port: number, cb?: () => any): Promise<void> {
-    await this.app.listen({ port });
+  async listen(host: string, port: number, cb?: () => any): Promise<void> {
+    await this.app.listen({ port, host });
 
     if (cb) cb();
   }

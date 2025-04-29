@@ -42,7 +42,7 @@ export class AppConfig extends ConfigBase {
     }
   }
 
-  public readonly host = this.asString('APP_HOST') ?? 'localhost';
+  public readonly host = this.asString('APP_HOST') ?? '0.0.0.0';
 
   public readonly port = this.asNumber('APP_PORT') ?? 3000;
 

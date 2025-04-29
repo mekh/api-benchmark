@@ -6,9 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build -p tsconfig.build.json",
     "start": "nest start",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
     "migration:run": "npm run typeorm:cli  -- -d ./datasource.config.ts migration:run",
     "populate": "ts-node -r dotenv/config ./populate/script.ts"

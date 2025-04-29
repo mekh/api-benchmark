@@ -9,6 +9,7 @@ import { ConfigModule } from './config/config.module';
 import { DbConfig } from './config/db.config';
 import { GraphqlConfig } from './config/graphql.cofig';
 import { PyroscopeConfig } from './config/pyroscope.config';
+import { ServiceController } from './controllers/service.controller';
 import { PyroscopeModule } from './lib/pyroscope';
 import { ActionEntity } from './entities/action.entity';
 import { PermissionEntity } from './entities/permission.entity';
@@ -63,7 +64,7 @@ export class AppModule {
         }),
       ],
       providers: [UserQueryResolver, UserRepository],
-      controllers: [UserController],
+      controllers: [UserController, ServiceController],
     };
   }
 }

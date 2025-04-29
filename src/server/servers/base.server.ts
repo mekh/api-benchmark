@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { GraphQLSchema } from 'graphql';
 import { graphql } from 'graphql/index';
 import { UserRepository } from '../../repositories/user.repository';
@@ -8,11 +9,19 @@ export abstract class BaseHttpServer {
 
   protected schema!: GraphQLSchema;
 
-  abstract listen(port: number, cb?: () => any): Promise<void>;
+  abstract listen(host: string, port: number, cb?: () => any): Promise<void>;
 
   public async init() {
     this.repo = await UserRepository.create();
     this.schema = createSchema(this.repo);
+  }
+
+  public info() {
+    return { pod: process.env.HOSTNAME, pid: process.pid };
+  }
+
+  public health() {
+    return 'ok';
   }
 
   protected async rawJoin() {
